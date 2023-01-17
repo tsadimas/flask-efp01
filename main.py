@@ -14,6 +14,7 @@ else:
 
 app = Flask(__name__)
 
+app.logger.info('Environmental variables Initialized')
 
 @app.route('/')
 def hello():
