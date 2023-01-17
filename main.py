@@ -3,6 +3,9 @@ from flask import Flask, redirect, url_for, request, render_template
 import os
 from dotenv import load_dotenv
 
+from db import get_employees
+
+
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
@@ -16,9 +19,13 @@ app = Flask(__name__)
 
 app.logger.info('Environmental variables Initialized')
 
+
+
+
 @app.route('/')
 def hello():
     return 'Hello World!'
+
 
 @app.route('/hello/<string:username>')
 def say_hello(username):
@@ -36,3 +43,12 @@ def get_name():
         return redirect(url_for('say_hello', username = user))
     else:
         return render_template('user_form.html')
+
+@app.route('/employees')
+def show_employees():
+    employees = get_employees()
+    return render_template('employees.html', employees=employees)
+
+
+
+

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table>
+    <caption>Employees</caption>
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for emp in employees %}
+        <tr>
+            <td>{{ emp.name}}</td>
+            <td>{{ emp.surname}}</td>
+            <td>{{ emp.salary}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock%}
