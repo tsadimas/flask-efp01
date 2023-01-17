@@ -1,5 +1,17 @@
 from flask import Flask, redirect, url_for, request, render_template
 
+import os
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+    print('APP_NAME is {}'.format(os.environ.get('APP_NAME')))
+else:
+    raise RuntimeError('Not found application configuration')
+
+
+
 app = Flask(__name__)
 
 
