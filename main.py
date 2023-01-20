@@ -24,7 +24,7 @@ app.logger.info('Environmental variables Initialized')
 
 @app.route('/')
 def hello():
-    return 'Hello World!'
+    return render_template('base.html')
 
 
 @app.route('/hello/<string:username>')
