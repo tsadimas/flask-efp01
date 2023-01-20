@@ -47,7 +47,7 @@ def get_name():
 @app.route('/employees')
 def show_employees():
     employees = get_employees()
-    return render_template('employees.html', employees=employees)
+    return render_template('employee/employees.html', employees=employees)
 
 
 @app.route('/employees/search', methods = ['GET','POST'])
@@ -56,13 +56,13 @@ def display_search_employees():
         last_name = request.form['last_name']
         return redirect(url_for('search_lname_employees', lname = last_name))
     else:
-        return render_template('search_employees.html')
+        return render_template('employee/search_employees.html')
 
 @app.route('/employees/search/<string:lname>')
 def search_lname_employees(lname):
     employees = search_employees(lname)
     print(employees)
-    return render_template('employees.html', employees=employees)
+    return render_template('employee/employees.html', employees=employees)
 
 
 
