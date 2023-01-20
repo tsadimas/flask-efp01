@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, request, render_template
 import os
 from dotenv import load_dotenv
 
-from db import get_employees
+from db import get_employees, search_employees
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -47,6 +47,21 @@ def get_name():
 @app.route('/employees')
 def show_employees():
     employees = get_employees()
+    return render_template('employees.html', employees=employees)
+
+
+@app.route('/employees/search', methods = ['GET','POST'])
+def display_search_employees():
+    if request.method == 'POST':
+        last_name = request.form['last_name']
+        return redirect(url_for('search_lname_employees', lname = last_name))
+    else:
+        return render_template('search_employees.html')
+
+@app.route('/employees/search/<string:lname>')
+def search_lname_employees(lname):
+    employees = search_employees(lname)
+    print(employees)
     return render_template('employees.html', employees=employees)
 
 

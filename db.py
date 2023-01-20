@@ -47,5 +47,25 @@ def get_employees():
 
             except oracledb.Error as err:
                 error_obj, = err.args
-                print(f"Error creating hit_count table: {error_obj.message}")
+                print(f"Error fetching Employees: {error_obj.message}")
+
+def search_employees(lname: str):
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "select * from employee where lname = :lastname", lastname=lname)
+                res = cursor.fetchall()
+                employees = []
+                for row in res:
+                    print(row)
+                    employees.append(
+                        {'name': row[0], 'surname': row[2], 'salary': row[7]})
+                print(employees)
+
+                return employees
+
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error searching for Employee: {error_obj.message}")
 
