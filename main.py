@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, request, render_template
 import os
 from dotenv import load_dotenv
 
-from db import get_employees, search_employees
+from db import get_employees, search_employees, get_employees_with_department, get_departments, save_employee
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -46,8 +46,10 @@ def get_name():
 
 @app.route('/employees')
 def show_employees():
-    employees = get_employees()
+    employees = get_employees_with_department()
     return render_template('employee/employees.html', employees=employees)
+
+
 
 
 @app.route('/employees/search', methods = ['GET','POST'])
@@ -64,6 +66,21 @@ def search_lname_employees(lname):
     print(employees)
     return render_template('employee/employees.html', employees=employees)
 
+
+@app.route('/employee/save', methods=['GET', 'POST'])
+def show_employee_form():
+    if request.method == 'POST':
+        ssn = request.form['ssn']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        salary = request.form['salary']
+        department_id = request.form['department_id']
+        print('first name {} - last name {} - salary - {} - dep id - {}'.format(first_name, last_name, salary, department_id))
+        save_employee(firstname=first_name, lastname=last_name, ssn=ssn, dep_id=department_id)
+        return redirect(url_for('show_employees'))
+    else:
+        depts = get_departments()
+        return render_template('employee/employee_form.html', departments=depts)
 
 
 

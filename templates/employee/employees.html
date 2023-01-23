@@ -9,6 +9,7 @@
             <th scope="col">Name</th>
             <th scope="col">Surname</th>
             <th scope="col">Salary</th>
+            <th scope="col">Department</th>
         </tr>
     </thead>
     <tbody>
@@ -17,8 +18,11 @@
             <td>{{ emp.name}}</td>
             <td>{{ emp.surname}}</td>
             <td>{{ emp.salary}}</td>
+            <td>{{ emp.department}}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+
+<a href="/employee/save">Add Employee</a>
 {% endblock%}

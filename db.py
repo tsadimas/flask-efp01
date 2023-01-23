@@ -49,6 +49,27 @@ def get_employees():
                 error_obj, = err.args
                 print(f"Error fetching Employees: {error_obj.message}")
 
+
+def get_employees_with_department():
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "select A.fname, A.lname, A.salary, B.dname from employee A inner join department B on A.dno = B.dnumber")
+                res = cursor.fetchall()
+                employees = []
+                for row in res:
+                    print(row)
+                    employees.append(
+                        {'name': row[0], 'surname': row[1], 'salary': row[2], 'department': row[3]})
+                print(employees)
+
+                return employees
+
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error fetching Employees: {error_obj.message}")
+
 def search_employees(lname: str):
     with pool.acquire() as connection:
         with connection.cursor() as cursor:
@@ -68,4 +89,37 @@ def search_employees(lname: str):
             except oracledb.Error as err:
                 error_obj, = err.args
                 print(f"Error searching for Employee: {error_obj.message}")
+
+
+def get_departments():
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute("select * from department")
+                res = cursor.fetchall()
+                departments = []
+                for row in res:
+                    print(row)
+                    departments.append(
+                        {'name': row[0], 'number': row[1], 'mgrssn': row[2], 'mgrstartdate': row[3]})
+                print(departments)
+
+                return departments
+
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error fetching Departments: {error_obj.message}")
+
+
+def save_employee(firstname: str, lastname: str, ssn: int, dep_id: int):
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "insert into employee (fname, lname, ssn, dno) values (:firstname, :lastname, :ssn, :depid)", (firstname, lastname, ssn, dep_id))
+                connection.commit()
+                return True
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error fetching Departments: {error_obj.message}")
 
