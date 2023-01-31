@@ -17,5 +17,5 @@ pip install -r requirements.txt
 
 ## run
 ```bash
-flask --app main --debug run
+flask --app main --debug run --port 6000
 ```
