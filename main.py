@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, request, render_template
+from flask_bootstrap import Bootstrap
 
 import os
 from dotenv import load_dotenv
@@ -16,6 +17,7 @@ else:
 
 
 app = Flask(__name__)
+Bootstrap(app)
 
 app.logger.info('Environmental variables Initialized')
 
