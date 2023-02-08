@@ -11,7 +11,8 @@
             <th scope="col">SSN</th>
             <th scope="col">Salary</th>
             <th scope="col">Department</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Action</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -22,12 +23,11 @@
             <td>{{ emp.ssn}}</td>
             <td>{{ emp.salary}}</td>
             <td>{{ emp.department}}</td>
-            <td> <div> <a href="/employee/edit/{{ emp.ssn}}">edit</a> <span>
+            <td> <a class="btn btn-primary btn-sm" role="button" href="/employee/edit/{{ emp.ssn}}">edit</a></td>
+             <td>
                 <form action="/employee/delete/{{ emp.ssn}}" method="POST">
-                 <input type="submit" value="delete">
+                 <input class="btn btn-danger btn-sm" type="submit" value="delete">
                 </form>
-            </span>
-            </div>
             </td>
         </tr>
     {% endfor %}
