@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, request, render_template
 import os
 from dotenv import load_dotenv
 
-from db import get_employees, search_employees, get_employees_with_department, get_departments, save_employee, get_employee, update_employee
+from db import get_employees, search_employees, get_employees_with_department, get_departments, save_employee, get_employee, update_employee, delete_employee
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -106,3 +106,8 @@ def edit_employee(emp_id):
             else:
                 save_employee(firstname=first_name, lastname=last_name, ssn=ssn, salary=salary, dep_id=department_id)
             return redirect(url_for('show_employees'))
+
+@app.route('/employee/delete/<int:emp_id>', methods=['POST'])
+def del_employee(emp_id):
+    result = delete_employee(emp_id)
+    return redirect(url_for('show_employees'))

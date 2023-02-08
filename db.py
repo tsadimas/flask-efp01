@@ -153,3 +153,19 @@ def update_employee(firstname: str, lastname: str, salary: int, ssn: int, dep_id
             except oracledb.Error as err:
                 error_obj, = err.args
                 print(f"Error fetching Departments: {error_obj.message}")
+
+
+def delete_employee(ssn: int):
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "delete from employee where ssn = :ssn", ssn=ssn)
+                connection.commit()
+                print('Employee {} deleted'.format(ssn))
+                return True
+
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error deleting Employee: {error_obj.message}")
+                return False
