@@ -55,14 +55,14 @@ def get_employees_with_department():
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    "select A.fname, A.lname, A.salary, B.dname from employee A inner join department B on A.dno = B.dnumber")
+                    "select A.fname, A.lname, A.ssn, A.salary, B.dname from employee A inner join department B on A.dno = B.dnumber")
                 res = cursor.fetchall()
                 employees = []
                 for row in res:
-                    print(row)
+                    # print(row)
                     employees.append(
-                        {'name': row[0], 'surname': row[1], 'salary': row[2], 'department': row[3]})
-                print(employees)
+                        {'name': row[0], 'surname': row[1], 'ssn': row[2], 'salary': row[3], 'department': row[4]})
+                # print(employees)
 
                 return employees
 
@@ -99,7 +99,7 @@ def get_departments():
                 res = cursor.fetchall()
                 departments = []
                 for row in res:
-                    print(row)
+                    # print(row)
                     departments.append(
                         {'name': row[0], 'number': row[1], 'mgrssn': row[2], 'mgrstartdate': row[3]})
                 print(departments)
@@ -111,15 +111,61 @@ def get_departments():
                 print(f"Error fetching Departments: {error_obj.message}")
 
 
-def save_employee(firstname: str, lastname: str, ssn: int, dep_id: int):
+def save_employee(firstname: str, lastname: str, salary: int, ssn: int, dep_id: int):
     with pool.acquire() as connection:
         with connection.cursor() as cursor:
             try:
                 cursor.execute(
-                    "insert into employee (fname, lname, ssn, dno) values (:firstname, :lastname, :ssn, :depid)", (firstname, lastname, ssn, dep_id))
+                    "insert into employee (fname, lname, salary, ssn, dno) values (:firstname, :lastname, :salary, :ssn, :depid)", (firstname, lastname, salary, ssn, dep_id))
                 connection.commit()
                 return True
             except oracledb.Error as err:
                 error_obj, = err.args
                 print(f"Error fetching Departments: {error_obj.message}")
 
+
+def get_employee(ssn: int):
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "select * from employee where ssn = :ssn", ssn=ssn)
+                res = cursor.fetchone()
+                print(res)
+                employee = {'name': res[0], 'surname': res[2], 'ssn': res[3], 'salary': res[7]}
+                print('fetched employee '.format(employee))
+                return employee
+
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error searching for Employee: {error_obj.message}")
+                return False
+
+
+def update_employee(firstname: str, lastname: str, salary: int, ssn: int, dep_id: int):
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "update employee (fname, lname, salary, ssn, dno) set values (:firstname, :lastname, :salary, :ssn, :depid)", (firstname, lastname, salary, ssn, dep_id))
+                connection.commit()
+                return True
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error fetching Departments: {error_obj.message}")
+
+
+def delete_employee(ssn: int):
+    with pool.acquire() as connection:
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "delete from employee where ssn = :ssn", ssn=ssn)
+                connection.commit()
+                print('Employee {} deleted'.format(ssn))
+                return True
+
+            except oracledb.Error as err:
+                error_obj, = err.args
+                print(f"Error deleting Employee: {error_obj.message}")
+                return False
