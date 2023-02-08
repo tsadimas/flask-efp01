@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, request, render_template
 import os
 from dotenv import load_dotenv
 
-from db import get_employees, search_employees, get_employees_with_department, get_departments, save_employee
+from db import get_employees, search_employees, get_employees_with_department, get_departments, save_employee, get_employee, update_employee
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -84,3 +84,25 @@ def show_employee_form():
 
 
 
+@app.route('/employee/edit/<int:emp_id>', methods=['GET', 'POST'])
+def edit_employee(emp_id):
+    if request.method == 'GET':
+        emp = get_employee(emp_id)
+        print('employee {}'.format(emp))
+        depts = get_departments()
+        return render_template('employee/employee_form.html', departments=depts, employee=emp)
+    if request.method == 'POST':
+        if request.method == 'POST':
+            ssn = request.form['ssn']
+            first_name = request.form['first_name']
+            last_name = request.form['last_name']
+            salary = request.form['salary']
+            department_id = request.form['department_id']
+            print('first name {} - last name {} - salary - {} - dep id - {}'.format(
+                first_name, last_name, salary, department_id))
+            emp = get_employee(ssn)
+            if emp:
+                update_employee(firstname=first_name, lastname=last_name, ssn=ssn, salary=salary, dep_id=department_id)
+            else:
+                save_employee(firstname=first_name, lastname=last_name, ssn=ssn, salary=salary, dep_id=department_id)
+            return redirect(url_for('show_employees'))

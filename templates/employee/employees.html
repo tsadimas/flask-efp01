@@ -8,8 +8,10 @@
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Surname</th>
+            <th scope="col">SSN</th>
             <th scope="col">Salary</th>
             <th scope="col">Department</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -17,8 +19,10 @@
         <tr>
             <td>{{ emp.name}}</td>
             <td>{{ emp.surname}}</td>
+            <td>{{ emp.ssn}}</td>
             <td>{{ emp.salary}}</td>
             <td>{{ emp.department}}</td>
+            <td> <a href="/employee/edit/{{ emp.ssn}}">edit</a></td>
         </tr>
     {% endfor %}
     </tbody>

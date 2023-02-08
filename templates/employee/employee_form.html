@@ -3,15 +3,15 @@
 {% block content %}
 
 <form method="post">
-        <label for="title">Add new Employee</label>
+        <label for="title">Add or Edit new Employee</label>
         <br>
-        <input type="number" name="ssn" placeholder="Enter SSN" required> </input>
+        <input type="number" name="ssn" placeholder="Enter SSN" required="true" value="{% if employee %}{{employee.ssn}}{% endif %}" readonly/>
         <br>
-        <input type="text" name="first_name" placeholder="Enter first name" required> </input>
+        <input type="text" name="first_name" placeholder="Enter first name" required="true" value="{% if employee %}{{employee.name}}{% endif %}"/>
         <br>
-         <input type="text" name="last_name" placeholder="Enter last name" required> </input>
+         <input type="text" name="last_name" placeholder="Enter last name" required="true" value="{% if employee %}{{employee.surname}}{% endif %}"/>
         <br>
-         <input type="number" name="salary" placeholder="Enter salary"> </input>
+         <input type="number" name="salary" placeholder="Enter salary" required="true" value="{% if employee %}{{employee.salary}}{% endif %}"/>
         <br>
         <select name="department_id">
         {% for department in departments %}
